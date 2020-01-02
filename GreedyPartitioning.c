@@ -21,7 +21,8 @@ Interval_pswap(Interval *i1, Interval *i2)
 
 
 }
-cocktail_shaker_sort_Interval(Interval *arr, int k)/*I only choice this sort because I like the name...*/
+cocktail_shaker_sort_Interval(Interval *arr, int k)/*I know that Cocktail shaker is n^2 but I wrote it here to save space.
+                                                    Just replace it with mergesort and you have a program that runs in nlogn*/
 {
 	int p, i;
 	for (p = 1; p <= k / 2; p++)
