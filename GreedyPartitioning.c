@@ -64,7 +64,7 @@ void GreedyPartition()
 	(array)->cliq_color = 1; 
 	for (i = 1;i < k;i++)
 	{
-		if ((array + i)->sp > (array + smallest)->ep)
+		if ((array + i)->sp >= (array + smallest)->ep)
 		{
 			smallest = i; 
 			clique_up_bound++; 
