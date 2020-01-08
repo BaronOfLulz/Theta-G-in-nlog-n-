@@ -9,7 +9,7 @@ struct Interval
 {
 	double sp;
 	double ep;
-	int cliq_color;
+
 }typedef Interval;
 
 
@@ -21,8 +21,7 @@ Interval_pswap(Interval *i1, Interval *i2)
 
 
 }
-cocktail_shaker_sort_Interval(Interval *arr, int k)/*I know that Cocktail shaker is n^2 but I wrote it here to save space.
-                                                    Just replace it with mergesort and you have a program that runs in nlogn*/
+cocktail_shaker_sort_Interval(Interval *arr, int k)/*I only choice this sort because I like the name...*/
 {
 	int p, i;
 	for (p = 1; p <= k / 2; p++)
@@ -52,7 +51,7 @@ void GreedyPartition()
 		printf("Enter end point: \n");
 		scanf("%lf", &(array + i)->ep);
 		printf("\n");
-		(array + i)->cliq_color = -1;
+		
 	}
     cocktail_shaker_sort_Interval(array, k);
 
@@ -61,18 +60,17 @@ void GreedyPartition()
 	printf("\n");
 	int clique_up_bound = 1;
 	int smallest = 0;
-	(array)->cliq_color = 1; 
+
 	for (i = 1;i < k;i++)
 	{
 		if ((array + i)->sp >= (array + smallest)->ep)
 		{
 			smallest = i; 
 			clique_up_bound++; 
-			(array + i)->cliq_color = clique_up_bound; 
+			
 		}
 		else
 		{
-			(array + i)->cliq_color = clique_up_bound;
 			if ((array + i)->ep < (array + smallest)->ep)
 				smallest = i;
 		}
