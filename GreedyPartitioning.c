@@ -21,7 +21,7 @@ Interval_pswap(Interval *i1, Interval *i2)
 
 
 }
-cocktail_shaker_sort_Interval(Interval *arr, int k)/*I used an N^2 for sorting to save space if we were to  to use mergesort this would nlogn*/
+cocktail_shaker_sort_Interval(Interval *arr, int k)/*I used an N^2 for sorting to save space if we were to  to use mergesort this would be nlogn*/
 {
 	int p, i;
 	for (p = 1; p <= k / 2; p++)
