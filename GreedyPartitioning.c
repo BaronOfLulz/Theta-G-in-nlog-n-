@@ -13,28 +13,74 @@ struct Interval
 }typedef Interval;
 
 
-Interval_pswap(Interval *i1, Interval *i2) 
+void merge(Interval* arr, int l, int m, int r)
 {
-	Interval temp = *i1;
-	*i1 = *i2;
-	*i2 = temp;
+	int i, j, k;
+	int n1 = m - l + 1;
+	int n2 = r - m;
 
+	/* create temp arrays */
+	Interval* L = (Interval*)malloc(sizeof(Interval) * n1);
+	Interval* R = (Interval*)malloc(sizeof(Interval) * n2);
+	/* Copy data to temp arrays L[] and R[] */
+	for (i = 0; i < n1; i++)
+		*(L + i) = *(arr + l + i);
+	for (j = 0; j < n2; j++)
+		*(R + j) = *(arr + m + 1 + j);
 
-}
-cocktail_shaker_sort_Interval(Interval *arr, int k)/*I used an N^2 for sorting to save space if we were to  to use mergesort this would be nlogn*/
-{
-	int p, i;
-	for (p = 1; p <= k / 2; p++)
+	/* Merge the temp arrays back into arr[l..r]*/
+	i = 0; // Initial index of first subarray 
+	j = 0; // Initial index of second subarray 
+	k = l; // Initial index of merged subarray 
+	while (i < n1 && j < n2)
 	{
-		for (i = p - 1; i < k - p; i++)
-			if ((arr + i)->sp > (arr + i + 1)->sp)
-				Interval_pswap((arr + i), (arr + i + 1));
-		for (i = k - p - 1; i >= p; i--)
-			if ((arr + i)->sp < (arr + i - 1)->sp)
-				Interval_pswap((arr + i), (arr + i - 1));
+		if ((L + i)->sp <= (R + j)->sp)
+		{
+			*(arr + k) = *(L + i);
+			i++;
+		}
+		else
+		{
+			*(arr + k) = *(R + j);
+			j++;
+		}
+		k++;
+	}
+	/* Copy the remaining elements of L[], if there
+	   are any */
+	while (i < n1)
+	{
+		*(arr+k) = *(L+i);
+		i++;
+		k++;
 	}
 
+	/* Copy the remaining elements of R[], if there
+	   are any */
+	while (j < n2)
+	{
+		*(arr+k) = *(R+j);
+		j++;
+		k++;
+	}
 }
+
+void mergeSort(Interval *arr, int l, int r)
+{
+	if (l < r)
+	{
+		// Same as (l+r)/2, but avoids overflow for 
+		// large l and h 
+		int m = l + (r - l) / 2;
+
+		// Sort first and second halves 
+		mergeSort(arr, l, m);
+		mergeSort(arr, m + 1, r);
+
+		merge(arr, l, m, r);
+	}
+}
+
 
 
 void GreedyPartition()
@@ -42,7 +88,7 @@ void GreedyPartition()
 	int k, i, j = 0;
 	printf("Please input k \n");
 	scanf("%d", &k);
-	Interval *array = (Interval*)malloc(sizeof(Interval)*k);
+	Interval* array = (Interval*)malloc(sizeof(Interval) * k);
 	for (i = 0;i < k;i++)
 	{
 		printf("Enter Interval %d : \n", i + 1);
@@ -51,10 +97,9 @@ void GreedyPartition()
 		printf("Enter end point: \n");
 		scanf("%lf", &(array + i)->ep);
 		printf("\n");
-		
-	}
-    cocktail_shaker_sort_Interval(array, k);
 
+	}
+	mergeSort(array, 0, k-1);
 	for (i = 0; i < k;i++)
 		printf(" (%.2f,%.2f) ", (array + i)->sp, (array + i)->ep);
 	printf("\n");
@@ -65,19 +110,19 @@ void GreedyPartition()
 	{
 		if ((array + i)->sp >= (array + smallest)->ep)
 		{
-			smallest = i; 
-			clique_up_bound++; 
-			
+			smallest = i;
+			clique_up_bound++;
+
 		}
 		else
 		{
 			if ((array + i)->ep < (array + smallest)->ep)
 				smallest = i;
 		}
-	}		
+	}
 	printf("  Theta(G) = %d = Alpha(G)", clique_up_bound);
 	printf("\n");
-	
+
 
 }
 
@@ -85,5 +130,5 @@ int main()
 {
 	GreedyPartition();
 	system("pause");
-	return 0; 
+	return 0;
 }
